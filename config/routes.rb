@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  resources :setlists
+  resources :setlists do
+    put '/songs/:song_id', to: 'setlists_songs#add_song'
+    delete '/songs/:song_id', to: 'setlists_songs#remove_song'
+  end
+
   resources :songs
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
