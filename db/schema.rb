@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_27_022950) do
+ActiveRecord::Schema.define(version: 2019_11_30_012954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 2019_11_27_022950) do
     t.datetime "time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "project_id", null: false
+    t.index ["project_id"], name: "index_setlists_on_project_id"
   end
 
   create_table "setlists_songs", id: false, force: :cascade do |t|
@@ -45,5 +47,16 @@ ActiveRecord::Schema.define(version: 2019_11_27_022950) do
     t.index ["project_id"], name: "index_songs_on_project_id"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email"
+    t.string "username"
+    t.string "password_digest"
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "setlists", "projects"
   add_foreign_key "songs", "projects"
 end

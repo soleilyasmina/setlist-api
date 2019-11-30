@@ -3,14 +3,14 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
-    @projects = Project.all
+    @projects = Project.all.to_json(include: { setlists: { include: :songs } })
 
-    render json: @projects
+    render json: @projects, status: :ok
   end
 
   # GET /projects/1
   def show
-    render json: @project
+    render json: @project, include: { setlists: { include: :songs } }, status: :ok
   end
 
   # POST /projects
