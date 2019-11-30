@@ -6,4 +6,9 @@ Rails.application.routes.draw do
   end
 
   resources :songs
+
+  post '/auth/login', to: 'authentication#login'
+  post '/auth/register', to: 'authentication#register'
+  get '/auth/verify', to: 'authentication#verify'
+  put '/auth/update', to: 'authentication#update'
 end
