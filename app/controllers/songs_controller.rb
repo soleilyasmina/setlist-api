@@ -1,6 +1,7 @@
 class SongsController < ApplicationController
   before_action :set_song, only: [:show, :update, :destroy]
-
+  
+  # TODO: protect routes
   # GET /songs
   def index
     @songs = Song.all
@@ -20,7 +21,7 @@ class SongsController < ApplicationController
     if @song.save
       render json: @song, status: :created, location: @song
     else
-      render json: @song.errors, status: :unprocessable_entity
+      render json: { errors: @song.errors }, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +30,7 @@ class SongsController < ApplicationController
     if @song.update(song_params)
       render json: @song
     else
-      render json: @song.errors, status: :unprocessable_entity
+      render json: { errors: @song.errors }, status: :unprocessable_entity
     end
   end
 

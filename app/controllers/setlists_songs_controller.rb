@@ -2,6 +2,7 @@ class SetlistsSongsController < ApplicationController
   before_action :get_song
   before_action :get_setlist
 
+  # TODO: protect routes
   def add_song
     if @setlist.songs.include?(@song)
       render json: { errors: ['Song is already in setlist.'] }, status: :conflict

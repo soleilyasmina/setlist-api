@@ -1,6 +1,7 @@
 class SetlistsController < ApplicationController
   before_action :set_setlist, only: [:show, :update, :destroy]
 
+  # TODO: protect routes
   # GET /setlists
   def index
     @setlists = Setlist.all
@@ -20,7 +21,7 @@ class SetlistsController < ApplicationController
     if @setlist.save
       render json: @setlist, status: :created, location: @setlist
     else
-      render json: @setlist.errors, status: :unprocessable_entity
+      render json: { errors: @setlist.errors }, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +30,7 @@ class SetlistsController < ApplicationController
     if @setlist.update(setlist_params)
       render json: @setlist
     else
-      render json: @setlist.errors, status: :unprocessable_entity
+      render json: { errors: @setlist.errors }, status: :unprocessable_entity
     end
   end
 
@@ -37,8 +38,6 @@ class SetlistsController < ApplicationController
   def destroy
     @setlist.destroy
   end
-
-
 
   private
     # Use callbacks to share common setup or constraints between actions.

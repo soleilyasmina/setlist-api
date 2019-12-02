@@ -8,7 +8,7 @@ class AuthenticationController < ApplicationController
       token = encode(user_id: @user.id, username: @username)
       render json: { token: token, user: @user.as_json.except("password_digest") }, status: :ok
     else
-      render json: { error: 'unauthorized' }, status: :unauthorized
+      render json: { errors: ['Unauthorized'] }, status: :unauthorized
     end
   end
 
@@ -20,7 +20,7 @@ class AuthenticationController < ApplicationController
       token = encode(user_id: @user.id, username: @user.username)
       render json: { token: token, user: @user.as_json.except("password_digest") }, status: :ok
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: { errors: @user.errors }, status: :unprocessable_entity
     end
   end
 
@@ -34,7 +34,7 @@ class AuthenticationController < ApplicationController
     if @current_user.update(user_params)
       render json: @current_user.as_json.except("password_digest"), status: :ok
     else
-      render json: @current_user.errors, status: :unprocessable_entity
+      render json: { errors: @current_user.errors } , status: :unprocessable_entity
     end
   end
 
