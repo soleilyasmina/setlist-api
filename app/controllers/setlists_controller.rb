@@ -1,15 +1,18 @@
 class SetlistsController < ApplicationController
   before_action :set_setlist, only: [:show, :update, :destroy]
+  before_action :set_project
+  before_action :authorize_request
+  before_action :can_view, only: [:index, :show]
+  before_action :can_edit, only: [:create, :update, :destroy]
 
-  # TODO: protect routes
-  # GET /setlists
+  # GET /projects/1/setlists
   def index
-    @setlists = Setlist.all
+    @setlists = @project.setlists
 
     render json: @setlists
   end
 
-  # GET /setlists/1
+  # GET /projects/1/setlists/1
   def show
     render json: @setlist
   end
@@ -17,9 +20,10 @@ class SetlistsController < ApplicationController
   # POST /setlists
   def create
     @setlist = Setlist.new(setlist_params)
+    @project.setlists << @setlist
 
     if @setlist.save
-      render json: @setlist, status: :created, location: @setlist
+      render json: @setlist, status: :created
     else
       render json: { errors: @setlist.errors }, status: :unprocessable_entity
     end
@@ -45,8 +49,21 @@ class SetlistsController < ApplicationController
       @setlist = Setlist.find(params[:id])
     end
 
+    def set_project
+      @project = Project.find(params[:project_id])
+    end
+
     # Only allow a trusted parameter "white list" through.
     def setlist_params
       params.require(:setlist).permit(:title, :location, :time)
+    end
+
+    # Allow view for setlists.
+    def can_view
+      render json: { errors: ['No privileges.'] }, status: :unauthorized unless @current_user.projects.include?(@project)
+    end
+
+    def can_edit
+      render json: { errors: ['No admin privileges.'] }, status: :unauthorized unless Member.where(project_id: @project.id, user_id: @current_user.id).take!.admin 
     end
 end
