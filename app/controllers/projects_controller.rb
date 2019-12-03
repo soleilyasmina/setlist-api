@@ -24,7 +24,7 @@ class ProjectsController < ApplicationController
 
     if @project.save
       Member.create(user_id: @current_user.id, project_id: @project.id, admin: true)
-      render json: @project, status: :created, location: @project
+      render json: @project, status: :created
     else
       render json: { errors: @project.errors }, status: :unprocessable_entity
     end
