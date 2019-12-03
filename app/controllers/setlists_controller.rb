@@ -17,7 +17,7 @@ class SetlistsController < ApplicationController
     render json: @setlist
   end
 
-  # POST /setlists
+  # POST /projects/1/setlists
   def create
     @setlist = Setlist.new(setlist_params)
     @project.setlists << @setlist
@@ -29,7 +29,7 @@ class SetlistsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /setlists/1
+  # PATCH/PUT /projects/1/setlists/1
   def update
     if @setlist.update(setlist_params)
       render json: @setlist
@@ -38,7 +38,7 @@ class SetlistsController < ApplicationController
     end
   end
 
-  # DELETE /setlists/1
+  # DELETE /projects/1/setlists/1
   def destroy
     @setlist.destroy
   end
